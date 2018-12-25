@@ -4,7 +4,4 @@ dependencies:
   - role: java
   - role: tomcat
   - role: qbroker
-  - { role: postgresql, when: web_frontend == 'nginx' }
-  - { role: mysql, when: web_frontend == 'apache' }
-  - { role: apache, when: web_frontend == 'apache' }
-  - { role: nginx, when: web_frontend != 'apache' }
+  - { role: "{{'postgresql' if idservice_db == 'postgresql' else 'mysql'}}", when: idservice_db_local == True }

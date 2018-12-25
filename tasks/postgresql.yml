@@ -1,8 +1,8 @@
 ---
-- name: Check table of services
+- name: Check table of services (required sudo with NOPASSWD)
+  command: /usr/bin/psql "{{postgresql_db_name}}" -c '\d services'
   become: yes
   become_user: "{{postgresql_user}}"
-  command: /usr/bin/psql "{{postgresql_db_name}}" -c '\d services'
   register: table_check
   failed_when: False
   changed_when: False
@@ -14,13 +14,13 @@
     mode: 0644
   when: "'service_id' not in table_check.stdout"
 
-- name: Load schema of eventid.sql
+- name: Load schema of eventid.sql (required sudo with NOPASSWD)
   become: yes
   become_user: "{{postgresql_user}}"
   command: /usr/bin/psql "{{postgresql_db_name}}" -f /tmp/eventid.sql
   when: "'service_id' not in table_check.stdout"
 
-- name: Grant privileges on tables
+- name: Grant privileges on tables (required sudo with NOPASSWD)
   become: yes
   become_user: "{{postgresql_user}}"
   postgresql_privs:
@@ -31,7 +31,7 @@
     privs: SELECT,UPDATE,INSERT,DELETE
     state: present
 
-- name: Grant privileges on sequences
+- name: Grant privileges on sequences (required sudo with NOPASSWD)
   become: yes
   become_user: "{{postgresql_user}}"
   postgresql_privs:
