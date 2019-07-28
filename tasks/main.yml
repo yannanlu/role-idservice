@@ -2,34 +2,43 @@
 - include: "{{idservice_db}}.yml"
   when: idservice_db_local == True
 
+- include: ../../qbroker/tasks/webapp.yml
+  vars:
+    service_id: "{{idservice_service_id}}"
+    webapp_context: "{{role_name}}"
+    my_artifact: "{{idservice_artifact}}"
+    my_jar_files: "{{idservice_jar_files}}"
+    my_jsp_files: "{{idservice_jsp_files}}"
+    my_json_files: "{{idservice_json_files}}"
+
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/Flow.json"
+    dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/Flow.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
   vars:
-    id: "{{qbroker_service_id}}"
+    id: "{{idservice_service_id}}"
     qb_dir: "{{qbroker_dir}}"
-    log_dir: "{{tomcat_logdir}}"
-  notify: Restart_tomcat.service
+    log_dir: "{{qbroker_dir}}/{{role_name}}/logs"
+  notify: "Restart_{{role_name}}"
 
 - name: Template of node_collect.json
   template:
     src: node_collect.json.j2
-    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/node_collect.json"
+    dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/node_collect.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
   vars:
     db_type: "{{idservice_db}}"
-  notify: Restart_tomcat.service
+  notify: "Restart_{{role_name}}"
 
 - name: Template of pstr_db_query.json
   template:
     src: pstr_db_query.json.j2
-    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/pstr_db_query.json"
+    dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/pstr_db_query.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
@@ -38,4 +47,4 @@
     db_url: "{{idservice_db_url}}"
     db_user: "{{idservice_db_user}}"
     db_passwd: "{{idservice_db_passwd|replace('\n', '')}}"
-  notify: Restart_tomcat.service
+  notify: "Restart_{{role_name}}"

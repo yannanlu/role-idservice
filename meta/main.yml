@@ -1,7 +1,5 @@
 ---
 dependencies:
-  - role: monit
-  - role: java
   - role: tomcat
   - role: qbroker
   - { role: "{{'postgresql' if idservice_db == 'postgresql' else 'mysql'}}", when: idservice_db_local == True }

@@ -1,7 +1,8 @@
 ---
 web_frontend: nginx
 
-idservice_artifact: qbroker-1.2.2.jar
+idservice_service_id: ID
+idservice_artifact: qbroker-1.2.4.jar
 idservice_security_plugin: qbroker-security-1.0.0.jar
 idservice_db_local: True
 idservice_db: postgresql
@@ -36,7 +37,7 @@ idservice_json_files:
   - pstr_nohit.json
 
 idservice_jar_files:
-  - commons-fileupload-1.2.2.jar
+  - commons-fileupload-1.3.3.jar
   - commons-io-1.4.jar
   - commons-net-3.3.jar
   - jakarta-oro-2.0.8.jar
