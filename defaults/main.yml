@@ -1,6 +1,6 @@
 ---
 web_frontend: nginx
-
+idservice_server_name: ''
 idservice_service_id: ID
 idservice_artifact: qbroker-1.2.4.jar
 idservice_security_plugin: qbroker-security-1.0.0.jar

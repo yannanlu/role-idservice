@@ -1,10 +1,16 @@
 ---
 - name: Send a rest request to {{qb_service}}
-  command: "/usr/bin/curl -ks https://{{ansible_host}}/{{qb_service}}/rest/id/event?name=x:y:z"
+  uri:
+    url: "https://{{ansible_host}}/{{qb_service}}/rest/id/event?name=x:y:z"
+    method: GET
+    headers:
+      Host: "{{idservice_server_name|default('localhost', true)}}"
+    return_content: yes
+    validate_certs: no
   register: query_result
   changed_when: False
 
 - name: Check the response from {{qb_service}}
   assert:
     that:
-      - "'\"event_id\":' in query_result.stdout"
+      - "'\"event_id\":' in query_result.content"

@@ -1,5 +1,7 @@
 ---
 qbroker_security_plugin: "{{idservice_security_plugin}}"
+apache_server_name: "{{idservice_server_name}}"
+nginx_server_name: "{{idservice_server_name}}"
 
 apache_locations:
   - "{{idservice_location}}"
