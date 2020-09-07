@@ -2,7 +2,7 @@
 - include: "{{idservice_db}}.yml"
   when: idservice_db_local == True
 
-- include: ../../qbroker/tasks/webapp.yml
+- include: "../../qbroker/tasks/webapp_{{webapp_container|default('tomcat')}}.yml"
   vars:
     service_id: "{{idservice_service_id}}"
     webapp_context: "{{role_name}}"
@@ -10,26 +10,27 @@
     my_jar_files: "{{idservice_jar_files}}"
     my_jsp_files: "{{idservice_jsp_files}}"
     my_json_files: "{{idservice_json_files}}"
+    my_java_opts: "{{idservice_java_opts}}"
 
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
     dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/Flow.json"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
     mode: 0644
   vars:
     id: "{{idservice_service_id}}"
     qb_dir: "{{qbroker_dir}}"
-    log_dir: "{{qbroker_dir}}/{{role_name}}/logs"
+    log_dir: "{{qbroker_dir}}/{{role_name}}/{{idservice_log_folder}}"
   notify: "Restart_{{role_name}}"
 
 - name: Template of node_collect.json
   template:
     src: node_collect.json.j2
     dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/node_collect.json"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
     mode: 0644
   vars:
     db_type: "{{idservice_db}}"
@@ -39,8 +40,8 @@
   template:
     src: pstr_db_query.json.j2
     dest: "{{qbroker_dir}}/flow/{{idservice_service_id}}/pstr_db_query.json"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
     mode: 0644
   vars:
     db_type: "{{idservice_db}}"

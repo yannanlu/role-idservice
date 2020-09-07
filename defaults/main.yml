@@ -1,19 +1,25 @@
 ---
-web_frontend: nginx
+idservice_java_opts: "-Xms256M -Xmx512M -Dfile.encoding=UTF8"
 idservice_server_name: ''
 idservice_service_id: ID
-idservice_artifact: qbroker-1.2.4.jar
+idservice_artifact: qbroker-1.2.5.jar
 idservice_security_plugin: qbroker-security-1.0.0.jar
 idservice_db_local: True
 idservice_db: postgresql
 idservice_url: "jdbc:postgresql://localhost:{{postgresql_db_port}}/{{postgresql_db_name}}" 
 idservice_db_user: "{{postgresql_db_user}}"
 idservice_db_passwd: "{{postgresql_db_passwd}}"
+idservice_log_folder: "{{'log' if webapp_container is defined and webapp_container == 'jboss' else 'logs'}}"
 
-idservice_location:
-  service: idservice
-  proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
-  expire: 'off'
+idservice_location_dict:
+  tomcat:
+    service: idservice
+    proxy: "http://{{tomcat_bind_ip|default('127.0.0.1')}}:{{tomcat_port|default('8080')}}"
+    expire: 'off'
+  jboss:
+    service: idservice
+    proxy: "http://{{jboss_bind_ip|default('127.0.0.1')}}:{{jboss_port|default('8080')}}"
+    expire: 'off'
 
 idservice_jsp_files:
   - date.jsp

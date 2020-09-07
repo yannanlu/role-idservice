@@ -1,10 +1,11 @@
 ---
 qbroker_security_plugin: "{{idservice_security_plugin}}"
+apache_rolename: idservice
 apache_server_name: "{{idservice_server_name}}"
+nginx_rolename: idservice
 nginx_server_name: "{{idservice_server_name}}"
 
 apache_locations:
-  - "{{idservice_location}}"
-
+  - "{{idservice_location_dict[webapp_container|default('tomcat')]}}"
 nginx_locations:
-  - "{{idservice_location}}"
+  - "{{idservice_location_dict[webapp_container|default('tomcat')]}}"
